@@ -1,28 +1,27 @@
 <?php
 include "koneksi.php";
 
-if (isset($_POST['simpan'])) {
-  $auto = mysqli_query($koneksi, "select max(id_kategori) as max_code from
-  tb_kategori");
-  $hasil = mysqli_fetch_array($auto);
-  $code = $hasil['max_code'];
-  $urutan = (int)substr($code, 1, 3);
-  $urutan++;
-  $huruf = "k";
-  $id_kategori = $huruf . sprintf("%03s", $urutan);
-  $nm_kategori = $_POST['nm_kategori'];
+$id  = $_GET['id'];
+$sql = mysqli_query($koneksi, "SELECT * FROM tb_kategori WHERE id_kategori = '$id'");
+$data = mysqli_fetch_array($sql);
 
-  $query = mysqli_query($koneksi, "INSERT INTO tb_kategori(id_kategori,
-  nm_kategori) VALUES ('$id_kategori', '$nm_kategori')");
-  if ($query) {
-    echo "<script>alert('Data Berhasil Ditambahkan!');</script>";
-    header("refresh:0; kategori.php");
-  } else {
-    echo "<script>alert('Data Gagal Ditambahkan!');</script>";
-    header("refresh:0; kategori.php");
-}
+if (isset($_POST['simpan'])) {
+    $nm_kategori = $_POST['nm_kategori'];
+
+    $query = mysqli_query($koneksi, "UPDATE tb_kategori SET nm_kategori = '$nm_kategori' WHERE id_kategori = '$id'");
+    
+    if ($query) {
+        echo "<script>alert('Data Berhasil Diubah!');</script>";
+        header("refresh:0; kategori.php");
+    } else {
+        echo "<script>alert('Data Gagal Diubah!');</script>";
+        header("refresh:0; kategori.php");
+    }
 }
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -198,7 +197,7 @@ if (isset($_POST['simpan'])) {
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Beranda</a></li>
           <li class="breadcrumb-item">Kategori Produk</li>
-          <li class="breadcrumb-item active">Tambah</li>
+          <li class="breadcrumb-item active">Edit</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -215,6 +214,7 @@ if (isset($_POST['simpan'])) {
                   <input type="text" class="form-control"
                   id="nm_kategori" name="nm_kategori"
                   placeholder="Masukkan Nama Kategori Produk">
+                  value="<?php echo $data["nm_kategori"]; ?>";
                 </div>
                 <div class="text-center">
                   <button type="reset" class="btn

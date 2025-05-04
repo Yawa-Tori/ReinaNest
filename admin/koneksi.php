@@ -1,4 +1,4 @@
 <?php 
-$koneksi - mysql_connect("localhost","root","",
+$koneksi = mysqli_connect("localhost" ,"root", "",
 "reinanest");
 ?>
