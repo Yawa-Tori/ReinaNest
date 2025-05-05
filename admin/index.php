@@ -466,46 +466,50 @@
               <div class="card info-card customers-card shadow-sm w-100">
                 <div class="card-body text-center py-4">
                   <h4 class="mb-2">Selamat Datang Di Website Admin
-                  <strong>Reina Nest!<strong></h4>
+                  <strong>Reina Nest!</strong></h4>
                   <p class="text-muted small mb-0">Kelola Produk, Transaksi, dan Pelanggan Dengan Mudah.<p>
                 </div>
               </div>
             </div><!-- End Welcome Card -->
-            <div class="row">
-  <!-- Pesanan Card -->
-  <div class="col-md-6">
-    <div class="card info-card sales-card">
-      <div class="card-body">
-        <h5 class="card-title">Pesanan <span>| Semua Waktu</span></h5>
-        <div class="d-flex align-items-center">
-          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-            <i class="bi bi-basket"></i>
-          </div>
-          <div class="ps-3">
-            <h6>145</h6>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Pendapatan Card -->
-  <div class="col-md-6">
-    <div class="card info-card revenue-card">
-      <div class="card-body">
-        <h5 class="card-title">Pendapatan <span>| Hari Ini</span></h5>
-        <div class="d-flex align-items-center">
-          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-            <i class="bi bi-currency-dollar"></i>
-          </div>
-          <div class="ps-3">
-            <h6>Rp.32.555</h6>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Pesanan <span>| Semua Waktu</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-basket"></i><!-- ikon keranjang belanja -->
+                    </div>
+                    <div class="ps-3">
+                      <h6>145</h6>
+                    </div>    
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+              
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Pendapatan <span>| Hari Ini</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>Rp.32.555</h6>                     
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
 
             
 
