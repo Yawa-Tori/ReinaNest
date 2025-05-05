@@ -104,7 +104,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
+        <a class="nav-link collapsed" href="index.php">
           <i class="bi bi-grid"></i>
           <span>Beranda</span>
         </a>
@@ -200,29 +200,34 @@
                 <?php
                     include 'koneksi.php';
                     $no = 1;
-                    // cek apakah ada pencarian
+                
+                    //cek apakah ada pencarian
                     $query = isset($_POST['query']) ? mysqli_real_escape_string($koneksi, $_POST['query']) : '';
+                    
                     //query dasar
                     $sql_query = "SELECT id_kategori, nm_kategori from tb_kategori";
-                    // jika ada pencarian, tambahkan kondisi WHERE
+                    
+                    //jika ada pencarian, tambahkan kondisi WHERE
                     if (!empty($query)) {
                       $sql_query .= " WHERE nm_kategori LIKE '%$query%'";
                     }
 
                     $sql = mysqli_query($koneksi, $sql_query);
+
                     if (mysqli_num_rows($sql) > 0) {
                         while ($hasil = mysqli_fetch_array($sql)) {
                     ?>
                         <tr>
                           <td><?php echo $no++; ?></td>
-                          <td><?php echo $hasil['nm_kategori']; ?></td>
+                          <td><?php echo $hasil
+                          ['nm_kategori']; ?></td>
                           <td>
                             <a href="e_kategori.php?id=<?php echo $hasil['id_kategori']; ?>" class="btn btn-warning">
-                              <i class="bi bi-pencil-square"></i>Edit
+                              <i class="bi bi-pencil-square"></i>
                             </a>
                             <a href="h_kategori.php?id=<?php echo $hasil['id_kategori']; ?>" class="btn btn-danger"
                             onclick="return confirm('Yakin ingin menghapus data ini?')">
-                              <i class="bi bi-trash"></i>Hapus
+                              <i class="bi bi-trash"></i>
                             </a>
                           </td>
                         </tr>
