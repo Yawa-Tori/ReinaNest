@@ -214,14 +214,11 @@ if (isset($_POST['simpan'])) {
                   class="form-label">Nama Kategori</label>
                   <input type="text" class="form-control"
                   id="nm_kategori" name="nm_kategori"
-                  placeholder="Masukkan Nama Kategori Produk">
-                  value="<?php echo $data["nm_kategori"]; ?>";
+                  placeholder="Masukkan Nama Kategori Produk" value="<?php echo isset($data['nm_kategori']) ? $data["nm_kategori"] : ''; ?>">
                 </div>
                 <div class="text-center">
-                  <button type="reset" class="btn
-                  btn-secondary">Reset</button>
-                  <button type="submit" class="btn btn-primary"
-                  name="simpan">Simpan</button>
+                  <button type="reset" class="btn btn-secondary">Reset</button>
+                  <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
                 </div>
               </form>
             </div>
