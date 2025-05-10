@@ -1,3 +1,52 @@
+<?php
+include "koneksi.php";
+
+//Mendapatkan kode produk otomatis
+$auto = mysqli_query($koneksi, "SELECT MAX(id_produk) AS max_code FROM tb_produk");
+$hasil = mysqli_fetch_array($auto);
+$code = $hasil['max_code'];
+$urutan = (int)substr($code, 1 ,3);
+$urutan++;
+$huruf = "P";
+$id_produk = $huruf . sprintf("%03s", $urutan);
+
+if (isset($_POST['simpan'])) {
+    $nm_produk = $_POST['nm_produk'];
+    $harga = $_POST['harga'];
+    $stok = $_POST['stok'];
+    $desk = $_POST['desk'];
+    $id_kategori = $_POST['id_kategori'];
+
+    // Upload gambar
+    $imgfile = $_FILES['gambar']['name'];
+    $tmp_file = $_FILES['gambar']['tmp_name'];
+    $extension = strtolower(pathinfo($imgfile, PATHINFO_EXTENSION));
+
+    $dir = "produk_img/"; //direktori penyimpanan gambar
+    $allowed_extensions = array("jpg", "jpeg", "png", "webp");
+
+    if (!in_array($extension, $allowed_extensions)) {
+        echo "<script>alert('Format tidak valid. Hanya jpg, jpeg, png, dan webp yang diperbolehkan.');</script>";
+    } else {
+        //rename file gambar agar unik
+        $imgnewfile = md5(time() . $imgfile) . "." . $extension;
+        move_uploaded_file($tmp_file, $dir . $imgnewfile);
+
+        //simpan data ke database
+        $query = mysqli_query($koneksi, "INSERT INTO tb_produk (id_produk, nm_produk, harga, stok, desk, id_kategori,
+        gambar) VALUES ('$id_produk', '$nm_produk', '$harga', '$stok', '$desk', '$id_kategori', '$imgnewfile')");
+
+        if ($query) {
+            echo "<script>alert('Produk berhasil ditambahkan!');</script>";
+            header("refresh:0, produk.php");
+        } else {
+            echo "<script>alert('Gagal menambahkan produk!');</script>";
+            header("refresh:0, produk.php");
+        }
+    }
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +54,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Produk - ReinaNest Admin</title>
+    <title>Produk - Reina Nest Admin</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -43,27 +92,14 @@
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
-        <div class="search-bar">
-            <form class="search-form d-flex align-items-center" method="GET" action="">
-                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-            </form>
-        </div><!-- End Search Bar -->
-
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
-
-                <li class="nav-item d-block d-lg-none">
-                    <a class="nav-link nav-icon search-bar-toggle " href="#">
-                        <i class="bi bi-search"></i>
-                    </a>
-                </li><!-- End Search Icon-->
 
                 <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <img src="assets/img/lena2.jpg" alt="Profile" class="rounded-circle">
-                        <!-- profile-img.jpg diganti dengan foto kalian -->
+                        <!-- profile-img.jpg diganti nama file gambar kalian -->
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -93,57 +129,58 @@
 
     </header><!-- End Header -->
 
+    <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="index.php">
-                <i class="bi bi-grid"></i>
+                    <i class="bi bi-grid"></i>
                     <span>Beranda</span>
                 </a>
-            </li><!-- End Dashboard Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="kategori.php">
-                <i class="bi bi-book"></i>
-                    <span>Kategori Produk</span>
-                </a>
-            </li><!-- End Kategori Page Nav -->
+            </li><!-- End Beranda Nav -->
 
             <li class="nav-item">
-                <a class="nav-link " href="produk.php">
-                <i class="bi bi-basket3"></i>
+                <a class="nav-link collapsed" href="kategori.php">
+                    <i class="bi bi-book"></i>
+                    <span>Kategori Produk</span>
+                </a>
+            </li><!-- End Kategori Produk Page Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link" href="produk.php">
+                    <i class="bi bi-basket3"></i>
                     <span>Produk</span>
                 </a>
             </li><!-- End Produk Page Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="keranjang.php">
-                <i class="bi bi-cart"></i>
+                    <i class="bi bi-cart"></i>
                     <span>Keranjang</span>
                 </a>
             </li><!-- End Keranjang Page Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="transaksi.php">
-                <i class="bi bi-cash-coin"></i>
+                     <i class="bi bi-cash-coin"></i>
                     <span>Transaksi</span>
                 </a>
             </li><!-- End Transaksi Page Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="laporan.php">
-                <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-card-checklist"></i>
                     <span>Laporan</span>
                 </a>
             </li><!-- End Laporan Page Nav -->
-
             <li class="nav-item">
                 <a class="nav-link collapsed" href="pengguna.php">
-                <i class="bi bi-emoji-wink"></i>
+                    <i class="bi bi-emoji-wink"></i>
                     <span>Pengguna</span>
                 </a>
-            </li><!-- End pengguna Page Nav -->
+            </li><!-- End Pengguna Page Nav -->
         </ul>
 
     </aside><!-- End Sidebar-->
@@ -155,104 +192,62 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Beranda</a></li>
-                    <li class="breadcrumb-item active">Produk</li>
+                    <li class="breadcrumb-item">Produk</li>
+                    <li class="breadcrumb-item active">Tambah</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="t_produk.php" class="btn btn-primary mt-3">
-                            <i class="bi bi-plus-lg"></i> Tambah Data
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <section class="section">
             <div class="row">
-
-                <div class="col-lg-12">
+                <div class="col-lg-6">
 
                     <div class="card">
                         <div class="card-body">
 
-                            <!-- Table with stripped rows -->
-                            <table class="table table-striped mt-2">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Nama Produk</th>
-                                        <th scope="col">Harga</th>
-                                        <th scope="col">Stok</th>
-                                        <th scope="col">Deskripsi</th>
-                                        <th scope="col">Nama Kategori</th>
-                                        <th scope="col">Gambar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    include "koneksi.php";
-                                    $no = 1;
-
-                                    // Ambil Keyword pencarian dari GET
-                                    $query = isset($GET['query']) ? mysqli_real_escape_string($koneksi, $_GET['query']) : '';
-
-                                    //Tambahkan WHERE jika query kossong
-                                    $sql_query = "SELECT tb_produk.*, tb_kategori.nm_kategori FROM tb_produk LEFT JOIN tb_kategori ON tb_produk.id_kategori = tb_kategori.id_kategori";
-
-                                    if (!empty($query)) {
-                                        $sql_query .= " WHERE tb_produk.nm_produk LIKE '%$query%' OR tb_kategori.nm_kategori LIKE '%$query%' OR tb_produk.desk LIKE '%$query%'";
-                                    }
-
-                                    $sql = mysqli_query($koneksi, $sql_query);
-
-                                    if (mysqli_num_rows($sql) > 0) {
-                                        while ($hasil = mysqli_fetch_array($sql)) {
-                                    ?>
-                                            <tr>
-                                                <td><?php echo $no++; ?></td>
-                                                <td><?php echo $hasil['nm_produk']; ?></td>
-                                                <td>Rp <?php echo number_format($hasil['harga'], 0, ',', '.'); ?></td>
-                                                <td><?php echo $hasil['stok']; ?></td>
-                                                <td><?php echo $hasil['desk']; ?></td>
-                                                <td><?php echo $hasil['nm_kategori']; ?></td>
-                                                <td>
-                                                    <?php if (!empty($hasil['gambar'])) { ?>
-                                                        <img src="produk_img/<?php echo $hasil['gambar']; ?>" width="100">
-                                                    <?php } else { ?>
-                                                        Tidak ada Gambar
-                                                    <?php } ?>
-                                                </td>
-                                                <td>
-                                                    <a href="e_produk.php?id=<?php echo $hasil['id_produk']; ?>" class="btn btn-warning">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                    <a href="h_produk.php?id=<?php echo $hasil['id_produk']; ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')">
-                                                        <i class="bi bi-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        <?php
+                            <!-- Vertical Form -->
+                            <form class="row g-3 mt-2" method="post" enctype="multipart/form-data">
+                                <div class="col-12">
+                                    <label for="nm_produk" class="form-label">Nama Produk</label>
+                                    <input type="text" class="form-control" id="nm_produk" name="nm_produk" placeholder="Masukkan Nama Produk" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="harga" class="form-label">Harga</label>
+                                    <input type="number" class="form-control" id="harga" name="harga" placeholder="Masukkan Harga Produk" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="stok" class="form-label">Stok</label>
+                                    <input type="number" class="form-control" id="stok" name="stok" placeholder="Masukkan Stok Produk" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="desk" class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" id="desk" name="desk" placeholder="Masukkan Deskripsi Produk" required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_kategori" class="form-label">Kategori</label>
+                                    <select class="form-control" id="id_kategori" name="id_kategori" required>
+                                        <option value="">-- Pilih Kategori --</option>
+                                        <?php 
+                                        include "koneksi.php";
+                                        $query = mysqli_query($koneksi, "SELECT * FROM tb_kategori");
+                                        while ($kategori = mysqli_fetch_array($query)) {
+                                            echo "<option value='{$kategori['id_kategori']}'>{$kategori['nm_kategori']}</option>";
                                         }
-                                    } else {
                                         ?>
-                                        <tr>
-                                            <td colspan="8" class="text-center">Data Tidak Ditemukan</td>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                                
-                                </tbody>
-                            </table>
-                            <!-- End Table with stripped rows -->
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="gambar" class="form-label">Gambar Produk</label>
+                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+                                </div>
+                                <div class="text-center">
+                                    <button type="reset" class="btn btn-secondary">Reset</button>
+                                    <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
+                                </div>
+                            </form>
 
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -266,7 +261,7 @@
         </div>
         <div class="credits">
             Designed by <a href="https://www.instagram.com/yawaa_kutori"
-            target="_blank">Vladilena</a>
+      target="_blank">Vladilena</a>
         </div>
     </footer><!-- End Footer -->
 
