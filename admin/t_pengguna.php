@@ -1,52 +1,58 @@
 <?php
+session_start();
 include "koneksi.php";
 
-//Mendapatkan kode produk otomatis
-$auto = mysqli_query($koneksi, "SELECT MAX(id_produk) AS max_code FROM tb_produk");
-$hasil = mysqli_fetch_array($auto);
-$code = $hasil['max_code'];
-$urutan = (int)substr($code, 1 ,3);
-$urutan++;
-$huruf = "P";
-$id_produk = $huruf . sprintf("%03s", $urutan);
+//cek apakah sudah login
+if (!isset($_SESSION["login"])) {
+    header("Location: login.php");
+    exit;
+}
 
-if (isset($_POST['simpan'])) {
-    $nm_produk = $_POST['nm_produk'];
-    $harga = $_POST['harga'];
-    $stok = $_POST['stok'];
-    $desk = $_POST['desk'];
-    $id_kategori = $_POST['id_kategori'];
+//cek apakah status tersedia dan pastikan user adalah admin
+if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
+    echo "<script>alert('Akses ditolak! Halaman ini hanya untuk admin') {
+    window.location.href = 'login.php';
+    </script>";
+    exit;
 
-    // Upload gambar
-    $imgfile = $_FILES['gambar']['name'];
-    $tmp_file = $_FILES['gambar']['tmp_name'];
-    $extension = strtolower(pathinfo($imgfile, PATHINFO_EXTENSION));
+}
+?>
 
-    $dir = "produk_img/"; //direktori penyimpanan gambar
-    $allowed_extensions = array("jpg", "jpeg", "png", "webp");
+<?php
+include "koneksi.php";
 
-    if (!in_array($extension, $allowed_extensions)) {
-        echo "<script>alert('Format tidak valid. Hanya jpg, jpeg, png, dan webp yang diperbolehkan.');</script>";
+if (isset($_POST["simpan"])) {
+    //ambil id terakhir dari tb_user
+    $auto = mysqli_query($koneksi, "SELECT max(id_user) as max_code FROM tb_user");
+    $hasil = mysqli_fetch_array($auto);
+    $code = $hasil['max_code'];
+
+    //menghasilkan id baru dengan format U0001. U0002, dst
+    $urutan = (int) substr($code, 3, 3);
+    $urutan++;
+    $huruf = "U";
+    $id_user = $huruf . sprintf("%03s", $urutan);
+
+    //ambil input dari form
+    $username = $_POST['username'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);//hasing pasword
+    $status = $_POST['status'];
+
+    //query untuk insert data ke tb_user
+    $query = mysqli_query($koneksi, "INSERT INTO tb_user (id_user, username, password, status) VALUES ('$id_user', '$username', '$password', '$status')");
+
+    //motifkasi jika berhasil
+    if ($query) {
+        echo "<script>alert('Data Berhasil Disimpan!'); window.location.href = 'pengguna.php';</script>";
+        header("refresh:0; pengguna.php");
     } else {
-        //rename file gambar agar unik
-        $imgnewfile = md5(time() . $imgfile) . "." . $extension;
-        move_uploaded_file($tmp_file, $dir . $imgnewfile);
-
-        //simpan data ke database
-        $query = mysqli_query($koneksi, "INSERT INTO tb_produk (id_produk, nm_produk, harga, stok, desk, id_kategori,
-        gambar) VALUES ('$id_produk', '$nm_produk', '$harga', '$stok', '$desk', '$id_kategori', '$imgnewfile')");
-
-        if ($query) {
-            echo "<script>alert('Produk berhasil ditambahkan!');</script>";
-            header("refresh:0, produk.php");
-        } else {
-            echo "<script>alert('Gagal menambahkan produk!');</script>";
-            header("refresh:0, produk.php");
-        }
+        echo "<script>alert('Data Gagal disimpan!'); window.location.href = 'pengguna.php';</script>";
+        header("refresh:0; pengguna.php");
     }
 
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +60,7 @@ if (isset($_POST['simpan'])) {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Produk - Reina Nest Admin</title>
+    <title>Pengguna - Reina Nest Admin</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -149,7 +155,7 @@ if (isset($_POST['simpan'])) {
             </li><!-- End Kategori Produk Page Nav -->
 
             <li class="nav-item">
-                <a class="nav-link" href="produk.php">
+                <a class="nav-link collapsed" href="produk.php">
                     <i class="bi bi-basket3"></i>
                     <span>Produk</span>
                 </a>
@@ -164,7 +170,7 @@ if (isset($_POST['simpan'])) {
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="transaksi.php">
-                     <i class="bi bi-cash-coin"></i>
+                    <i class="bi bi-cash-coin"></i>
                     <span>Transaksi</span>
                 </a>
             </li><!-- End Transaksi Page Nav -->
@@ -176,7 +182,7 @@ if (isset($_POST['simpan'])) {
                 </a>
             </li><!-- End Laporan Page Nav -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="pengguna.php">
+                <a class="nav-link" href="pengguna.php">
                     <i class="bi bi-emoji-wink"></i>
                     <span>Pengguna</span>
                 </a>
@@ -188,11 +194,11 @@ if (isset($_POST['simpan'])) {
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Produk</h1>
+            <h1>Pengguna</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Beranda</a></li>
-                    <li class="breadcrumb-item">Produk</li>
+                    <li class="breadcrumb-item">Pengguna</li>
                     <li class="breadcrumb-item active">Tambah</li>
                 </ol>
             </nav>
@@ -205,40 +211,30 @@ if (isset($_POST['simpan'])) {
                         <div class="card-body">
 
                             <!-- Vertical Form -->
-                            <form class="row g-3 mt-2" method="post" enctype="multipart/form-data">
+                            <form class="row g-3 mt-2" method="post">
+                                <!-- Username -->
                                 <div class="col-12">
-                                    <label for="nm_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="nm_produk" name="nm_produk" placeholder="Masukkan Nama Produk" required>
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan Username" maxlength="100" required>
                                 </div>
+
+                                <!-- Password -->
                                 <div class="col-12">
-                                    <label for="harga" class="form-label">Harga</label>
-                                    <input type="number" class="form-control" id="harga" name="harga" placeholder="Masukkan Harga Produk" required>
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password" required>
                                 </div>
+
+                                <!-- Status -->
                                 <div class="col-12">
-                                    <label for="stok" class="form-label">Stok</label>
-                                    <input type="number" class="form-control" id="stok" name="stok" placeholder="Masukkan Stok Produk" required>
-                                </div>
-                                <div class="col-12">
-                                    <label for="desk" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="desk" name="desk" placeholder="Masukkan Deskripsi Produk" required></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <label for="id_kategori" class="form-label">Kategori</label>
-                                    <select class="form-control" id="id_kategori" name="id_kategori" required>
-                                        <option value="">-- Pilih Kategori --</option>
-                                        <?php 
-                                        include "koneksi.php";
-                                        $query = mysqli_query($koneksi, "SELECT * FROM tb_kategori");
-                                        while ($kategori = mysqli_fetch_array($query)) {
-                                            echo "<option value='{$kategori['id_kategori']}'>{$kategori['nm_kategori']}</option>";
-                                        }
-                                        ?>
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select" id="status" name="status" required>
+                                        <option value="">Pilih Status</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="customer">Customer</option>
                                     </select>
                                 </div>
-                                <div class="col-12">
-                                    <label for="gambar" class="form-label">Gambar Produk</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
-                                </div>
+
+                                <!-- Tombol -->
                                 <div class="text-center">
                                     <button type="reset" class="btn btn-secondary">Reset</button>
                                     <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
