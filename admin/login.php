@@ -15,7 +15,7 @@ if(isset($_POST['login'])) {
   if ($result->num_rows === 1) {
     $row = $result->fetch_assoc();
 
-    if (isset($row['password']) && password_verify($pasword, $row["password"])) {
+    if (isset($row['password']) && password_verify($password, $row["password"])) {
       if ($row["status"] === "admin") {
         $_SESSION["login"] = true;
         $_SESSION["username"] = $row["username"];
@@ -92,7 +92,7 @@ if(isset($_POST['login'])) {
                     <p class="text-center small">Enter your username & password to login</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 " method="post">
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>

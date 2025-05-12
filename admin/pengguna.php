@@ -3,15 +3,18 @@ session_start();
 include "koneksi.php";
 
 //cek apakah sudah login
-if (!isset($_SESSION['login'])) {
-    header("location:login.php");
+if (!isset($_SESSION["login"])) {
+    header("Location: login.php");
     exit;
 }
 
 //cek apakah status tersedia dan pastikan user adalah admin
 if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
-    echo "<script>alert('Akses ditolak. Halaman ini hanya untuk admin.');window.location.href='login.php';</script>";
+    echo "<script>alert('Akses ditolak! Halaman ini hanya untuk admin') {
+    window.location.href = 'login.php';
+    </script>";
     exit;
+
 }
 ?>
 
@@ -96,7 +99,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a class="dropdown-item d-flex align-items-center" href="logout.php">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Sign Out</span>
                             </a>
@@ -135,7 +138,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
             </li><!-- End Produk Page Nav -->
 
             <li class="nav-item">
-                <a class="nav-link" href="keranjang.php">
+                <a class="nav-link collapsed" href="keranjang.php">
                     <i class="bi bi-cart"></i>
                     <span>Keranjang</span>
                 </a>
@@ -156,7 +159,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
             </li><!-- End Laporan Page Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="pengguna.php">
+                <a class="nav-link " href="pengguna.php">
                     <i class="bi bi-emoji-wink"></i>
                     <span>Pengguna</span>
                 </a>
@@ -181,7 +184,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <a href="t_produk.php" class="btn btn-primary mt-3">
+                        <a href="t_pengguna.php" class="btn btn-primary mt-3">
                             <i class="bi bi-plus-lg"></i> Tambah Data
                         </a>
                     </div>
