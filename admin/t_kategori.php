@@ -21,49 +21,27 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
 <?php
 include "koneksi.php";
 
-// Mendapatkan kode produk otomatis
-$auto = mysqli_query($koneksi, "SELECT MAX(id_produk) AS max_code FROM tb_produk");
-$hasil = mysqli_fetch_array($auto);
-$code = $hasil['max_code'];
-$urutan = (int)substr($code, 1, 3);
-$urutan++;
-$huruf = "P";
-$id_produk = $huruf . sprintf("%03s", $urutan);
-
 if (isset($_POST['simpan'])) {
-    $nm_produk = $_POST['nm_produk'];
-    $harga = $_POST['harga'];
-    $stok = $_POST['stok'];
-    $desk = $_POST['desk'];
-    $id_kategori = $_POST['id_kategori'];
+  $auto = mysqli_query($koneksi, "SELECT MAX(id_kategori) AS max_code FROM tb_kategori");
+  $hasil = mysqli_fetch_array($auto);
+  $code = $hasil['max_code'];
+  $urutan = (int)substr($code, 1, 3);
+  $urutan++;
+  $huruf = "K";
+  $id_kategori = $huruf . sprintf("%03s", $urutan);
+  $nm_kategori = $_POST['nm_kategori'];
 
-    // Upload Gambar
-    $imgfile = $_FILES['gambar']['name'];
-    $tmp_file = $_FILES['gambar']['tmp_name'];
-    $extension = strtolower(pathinfo($imgfile, PATHINFO_EXTENSION));
-
-    $dir = "produk_img/"; // Direktori penyimpanan gambar
-    $allowed_extensions = array("jpg", "jpeg", "png", "webp");
-
-    if (!in_array($extension, $allowed_extensions)) {
-        echo "<script>alert('Format tidak valid. Hanya jpg, jpeg, png, dan webp yang diperbolehkan.');</script>";
-    } else {
-        // Rename file gambar agar unik
-        $imgnewfile = md5(time() . $imgfile) . "." . $extension;
-        move_uploaded_file($tmp_file, $dir . $imgnewfile);
-
-        // Simpan data ke database
-        $query = mysqli_query($koneksi, "INSERT INTO tb_produk (id_produk, nm_produk, harga, stok, desk, id_kategori, gambar) VALUES ('$id_produk', '$nm_produk', '$harga', '$stok', '$desk', '$id_kategori', '$imgnewfile')");
-
+  $query = mysqli_query($koneksi, "INSERT INTO tb_kategori(id_kategori,
+  nm_kategori) VALUES ('$id_kategori', '$nm_kategori')");
         if ($query) {
-            echo "<script>alert('Produk berhasil ditambahkan!');</script>";
-            header("refresh:0, produk.php");
+            echo "<script>alert('Data berhasil ditambahkan!');</script>";
+            header("refresh:0, kategori.php");
         } else {
-            echo "<script>alert('Gagal menambahkan produk!');</script>";
-            header("refresh:0, produk.php");
+            echo "<script>alert('Data gagal ditambahkan!');</script>";
+            header("refresh:0, kategori.php");
         }
-    }
 }
+
 ?>
 
 <!DOCTYPE html>
