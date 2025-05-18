@@ -78,7 +78,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="navbar-brand" href="index.html">  <h2 class="d-none d-lg-block">Reina Nest</h2> </a>
+                        <a class="navbar-brand" href="index.html">  <h1 class="m-0">Reina Nest</h1> </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
                         </div>
                         <?php session_start(); ?>
                         <?php if (isset($_SESSION['username'])) : ?>
-                        <div class="hearer_icon d-flex">
+                        <div class="header_icon d-flex">
                             <!-- cart link -->
                              <?php
                              include 'admin/koneksi.php';
@@ -112,7 +112,7 @@
                              if ($user_id) {
                                 $query = "SELECT COUNT(*) as total FROM tb_pesanan WHERE id_user = '$user_id'";
                                 $result = mysqli_query($koneksi, $query);
-                                $date = mysqli_fetch_assoc($result);
+                                $data = mysqli_fetch_assoc($result);
                                 $jumlah_item = $data['total'] ?? 0;
                                 } else {
                                     $jumlah_item = 0;
@@ -120,15 +120,15 @@
                              ?>
 
                              <a href="cart.php" id="cartlink" style="position: relative; display: inline-block;">
-                                <i class="fas fa-user"></i>
+                                <i class="fas fa-cart-plus" style="font-size: 16px;"></i>
                                 <span class="cart-badge"><?= $jumlah_item ?></span>
                              </a>
 
                              <!-- user dropdown -->
-                            <div class="dropdown cart">
+                            <div class="dropdown user">
                                 <a class="dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-cart-plus"></i>
+                                    <i class="fas fa-user"></i>
                                     <span class="ml-2 text-dark"><?= htmlspecialchars($_SESSION['username']); ?></span> <!-- mennampilkan username dari session -->
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">

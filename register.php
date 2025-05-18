@@ -93,6 +93,10 @@ $data = mysqli_fetch_array($sql);
                                     <input type="password" class="form-control" id="password" name="password" value=""
                                         placeholder="Password">
                                 </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <input type="password" class="form-control" id="password2" name="password2" value=""
+                                        placeholder="Konfirmasi Password">
+                                </div>
                                 <div class="col-md-12 form-group">
                                     <button type="submit" value="submit" class="btn_3" name="login">
                                         Daftar Sekarang
