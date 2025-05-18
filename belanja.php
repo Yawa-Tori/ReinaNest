@@ -223,14 +223,14 @@
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 
                                 <div class="single_product_menu d-flex">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Cari Produk"
-                                            aria-describedby="inputGroupPrepend">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroupPrepend"><i
-                                                    class="ti-search"></i></span>
+                                    <form method="GET" action="">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="search" placeholder="Cari Produk..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+                                            <div class="input-group-prepend">                                             
+                                                    <button type="submit" class="input-group-text"><i class="ti-search"></i></button>                              
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -248,7 +248,7 @@
                     //query produk berdassarkan kategori & oencarian
                     $where_clause = "1=1"; //default menampilkan semua produk
                     if (!empty($search)) {
-                        $where_clause = " AND nm_produk LIKE '%$search%'";
+                        $where_clause .= " AND nm_produk LIKE '%$search%'";
                     }
                     if (!empty($id_kategori)) {
                         $where_clause .= " AND id_kategori = '$id_kategori'"; //perhatikan tanda kutip untuk string
@@ -304,7 +304,7 @@
                                             </li>
                                         <?php } ?>
 
-                                        <?php for ($i = 1; $i <= $total_page; $i++) { ?>
+                                        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
                                             <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
                                                 <a class="page-link" href="?id_kategori=<?php echo $id_kategori; ?>&search=<?php echo $search; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
                                             </li>
