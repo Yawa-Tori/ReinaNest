@@ -45,8 +45,7 @@
       autoplay: true,
       autoplayHoverPause: true,
       autoplayTimeout: 5000,
-      nav: true,
-      navText: ["next", "previous"],
+      nav: false,
       responsive: {
         0: {
           margin: 15,
@@ -61,12 +60,12 @@
         768: {
           margin: 30,
           items: 3,
-          nav: true
+          nav: false
         },
         991: {
           margin: 30,
           items: 4,
-          nav: true
+          nav: false
         }
       }
     });
