@@ -2,8 +2,8 @@
 include 'admin/koneksi.php';
 session_start();
 
-if (isset($_SESSION['id_user'])) {
-  echo json_encode(["success" => false, "massage" => "silakan login terlebih dahulu"]);
+if (!isset($_SESSION['id_user'])) {
+  echo json_encode(["success" => false, "message" => "silakan login terlebih dahulu"]);
   exit;
 }
 
@@ -15,7 +15,7 @@ $query_pesanan = "SELECT * FROM tb_pesanan WHERE id_user = '$id_user'";
 $result_pesanan = mysqli_query($koneksi, $query_pesanan);
 
 if (mysqli_num_rows($result_pesanan) == 0) {
-  echo json_encode(["success" => false, "massage" => "keranjang kosong!"]);
+  echo json_encode(["success" => false, "message" => "keranjang kosong!"]);
   exit;
 }
 
@@ -37,7 +37,7 @@ foreach ($pesanan_data as $pesanan) {
   $row_stok = mysqli_fetch_assoc($result_stok);
 
   if (!$row_stok || $row_stok['stok'] < $qty) {
-    echo json_encode(["success" => false, "massage" => "stok tidak cukup untuk produk ID: $id_produk"]);
+    echo json_encode(["success" => false, "message" => "stok tidak cukup untuk produk ID: $id_produk"]);
     exit;
   }
 }
@@ -68,7 +68,7 @@ if ($last_id) {
 $query_jual = "INSERT INTO tb_jual (id_jual, id_user, tg_jual, total, diskon)
                VALUES ('$new_id', '$id_user', '$tgl_jual', '$total_bayar', '$diskon')";
 if (!mysqli_query($koneksi, $query_jual)) {
-  die(json_encode(["success" => false, "massage" => "Gagal insert ke tb_jual: " . mysqli_error($koneksi)]));
+  die(json_encode(["success" => false, "message" => "Gagal insert ke tb_jual: " . mysqli_error($koneksi)]));
 }
 
 //insert ke tb_jualdtl
@@ -84,7 +84,7 @@ if (!empty($values)) {
   $query_jualdtl = "INSERT INTO tb_jualdtl (id_jual, id_produk, qty, harga)
                     VALUES " . implode(", ", $values);
                     if (!mysqli_query($koneksi, $query_jualdtl)) {
-                      die(json_encode(["success" => false, "massage" => "Gagal insert ke tb_jualdtl: " . mysqli_error($koneksi)]));
+                      die(json_encode(["success" => false, "message" => "Gagal insert ke tb_jualdtl: " . mysqli_error($koneksi)]));
                     }
 }
 
@@ -96,14 +96,14 @@ foreach ($pesanan_data as $pesanan) {
  $query_update_stok = "UPDATE tb_produk SET stok = stok - $qty WHERE id_produk = '$id_produk'";
 
  if (!mysqli_query($koneksi, $query_update_stok)) {
-  die(json_encode(["succes" => false, "massage" => "Gagal update stok produk: " . mysqli_error($koneksi)]));
+  die(json_encode(["succes" => false, "message" => "Gagal update stok produk: " . mysqli_error($koneksi)]));
  }
 }
 
 //hapus data dari semua tb_pesanan
 $query_hapus = "DELETE FROM tb_pesanan WHERE id_user = '$id_user'";
 if (!mysqli_query($koneksi, $query_hapus)) {
-  die(json_encode(["success" => false, "massage" => "Gagal hapus tb_pesanan: " . mysqli_error($koneksi)]));
+  die(json_encode(["success" => false, "message" => "Gagal hapus tb_pesanan: " . mysqli_error($koneksi)]));
 }
 
 echo json_encode(["success" => true]);

@@ -61,27 +61,6 @@
                         <?php session_start(); ?>
                         <?php if (isset($_SESSION['username'])) : ?>
                         <div class="header_icon d-flex">
-                            <!-- cart link -->
-                             <?php
-                             include 'admin/koneksi.php';
-
-                             $user_id = $_SESSION['id_user'] ?? null;
-
-                             if ($user_id) {
-                                $query = "SELECT COUNT(*) as total FROM tb_pesanan WHERE id_user = '$user_id'";
-                                $result = mysqli_query($koneksi, $query);
-                                $data = mysqli_fetch_assoc($result);
-                                $jumlah_item = $data['total'] ?? 0;
-                                } else {
-                                    $jumlah_item = 0;
-                             }
-                             ?>
-
-                             <a href="cart.php" id="cartlink" style="position: relative; display: inline-block;">
-                                <i class="fas fa-cart-plus" style="font-size: 16px;"></i>
-                                <span class="cart-badge"><?= $jumlah_item ?></span>
-                             </a>
-
                              <!-- user dropdown -->
                             <div class="dropdown user">
                                 <a class="dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
@@ -202,7 +181,7 @@
                                 </div>
                               </td>
                               <td>
-                                <h5>Rp. <?php echo number_format($row['harga'], 0, ',', '.'); ?></h5>
+                                <h5>Rp. <?php echo number_format($row['total'], 0, ',', '.'); ?></h5>
                               </td>
                               <td>
                                 <a href="hapus_cart.php?id_pesanan=<?php echo $row
@@ -263,7 +242,6 @@
                             </td>
 
                           </tr>
-
                         </tbody>
                       </table>
                     </form>
@@ -276,7 +254,7 @@
       </div>
   </section>
   <script>
-    document.addEventlistener("DOMContentLoaded", function(){
+    document.addEventListener("DOMContentLoaded", function(){
       document.getElementById("checkoutBtn") .addEventListener("click", function()
       {
         fetch("proses_checkout.php", {
@@ -292,7 +270,7 @@
             alert("Checkout berhasil!");
             window.location.href = "belanja.php"; //redirect ke haalaman riwayat transaksi
           } else {
-            alert("Gagal checkout: " + data.massage);
+            alert("Gagal checkout: " + data.message);
           }
         })
         .catch(error => console.error("Error:", error));

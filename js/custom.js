@@ -263,46 +263,46 @@
 
   }
 // click counter js
-(function() {
- 
+(function () {
   window.inputNumber = function(el) {
-
-    var min = el.attr('min') || false;
-    var max = el.attr('max') || false;
-
-    var els = {};
-
-    els.dec = el.prev();
-    els.inc = el.next();
-
     el.each(function() {
-      init($(this));
+      var $input = $(this),
+          min = parseInt($input.attr('min'), 10) || 1, //default ke 1 jika tidak ada min
+          max = parseInt($input.attr('max'), 10); //ambil stok dari max
+
+      var $dec = $input.prev(),
+          $inc = $input.next();
+
+      //fungsi untuk mengurangi jumlah
+      $dec.on('click', function() {
+        var value = parseInt($input.val(), 10);
+        if (!min || value > min) { //pastikan tidak kurang dari batas minimum
+          $input.val(value - 1);
+        }
+      });
+
+      //fungsi untuk menambah jumlah
+      $inc.on('click', function() {
+        var value = parseInt($input.val(), 10);
+        if (!max || value < max) { //pastikan tidak melebihi stok
+          $input.val(value + 1);
+        }
+      });
+
+      //validasi saat user langsung mengubah input jumlah
+      $input.on("change", function() {
+        var value = parseInt($input.val(), 10);
+        if (value < min) {
+          $input.val(min);
+        } else if (max && value > max) {
+          $input.val(max);
+        }
+      });
     });
-
-    function init(el) {
-
-      els.dec.on('click', decrement);
-      els.inc.on('click', increment);
-
-      function decrement() {
-        var value = el[0].value;
-        value--;
-        if(!min || value >= min) {
-          el[0].value = value;
-        }
-      }
-
-      function increment() {
-        var value = el[0].value;
-        value++;
-        if(!max || value <= max) {
-          el[0].value = value++;
-        }
-      }
-    }
   }
 })();
 
+//panggil fungsi untuk semua input jumlah produk
 inputNumber($('.input-number'));
 
 
