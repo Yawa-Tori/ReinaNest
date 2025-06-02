@@ -74,7 +74,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
             <ul class="d-flex align-items-center">
 
                 <li class="nav-item d-block d-lg-none">
-                    <a class="nav-link nav-icon search-bar-toggle " href="logout.php">
+                    <a class="nav-link nav-icon search-bar-toggle " href="#">
                         <i class="bi bi-search"></i>
                     </a>
                 </li><!-- End Search Icon-->
@@ -219,7 +219,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
                                     $no = 1;
 
                                     // Ambil Keyword pencarian dari GET
-                                    $query = isset($GET['query']) ? mysqli_real_escape_string($koneksi, $_GET['query']) : '';
+                                    $query = isset($_GET['query']) ? mysqli_real_escape_string($koneksi, $_GET['query']) : '';
 
                                     //Tambahkan WHERE jika query kossong
                                     $sql_query = "SELECT tb_produk.*, tb_kategori.nm_kategori FROM tb_produk LEFT JOIN tb_kategori ON tb_produk.id_kategori = tb_kategori.id_kategori";
