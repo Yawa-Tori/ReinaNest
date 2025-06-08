@@ -146,10 +146,9 @@
                                 <div class="col-lg-5 col-md-8">
                                     <div class="banner_text">
                                         <div class="banner_text_iner">
-                                            <h1>Wood & Cloth
-                                                Sofa</h1>
-                                            <p>Incididunt ut labore et dolore magna aliqua quis ipsum
-                                                suspendisse ultrices gravida. Risus commodo viverra</p>
+                                            <h1>Sofa Classic Haven</h1>
+                                            <p>Sofa ruang tamu dengan desain modern dan kenyamanan maksimal. Dilengkapi bantalan empuk serta sandaran ergonomis, memberikan pengalaman duduk yang nyaman. 
+                                                Warna krem dengan aksen kayu di bagian bawah menambah kesan elegan dan hangat dalam ruangan.</p>
                                             <a href="belanja.php" class="btn_2">Beli Sekarang</a>
                                         </div>
                                     </div>
@@ -163,10 +162,11 @@
                                 <div class="col-lg-5 col-md-8">
                                     <div class="banner_text">
                                         <div class="banner_text_iner">
-                                            <h1>Cloth & Wood
-                                                Sofa</h1>
-                                            <p>Incididunt ut labore et dolore magna aliqua quis ipsum
-                                                suspendisse ultrices gravida. Risus commodo viverra</p>
+                                            <h1>Double Bed Steel</h1>
+                                            <p>Tidur lebih nyaman dengan double bed yang elegan dan kokoh!.Dilengkapi 
+                                                dengan tangga akses yang aman dan nyaman, double bed ini sangat 
+                                                ideal untuk kamar anak-anak, asrama, atau hunian modern yang mengutamakan efisiensi ruang. 
+                                                </p>
                                             <a href="belanja.php" class="btn_2">Lihat Produk</a>
                                         </div>
                                     </div>
@@ -180,10 +180,9 @@
                                 <div class="col-lg-5 col-md-8">
                                     <div class="banner_text">
                                         <div class="banner_text_iner">
-                                            <h1>Wood & Cloth
-                                                Sofa</h1>
-                                            <p>Incididunt ut labore et dolore magna aliqua quis ipsum
-                                                suspendisse ultrices gravida. Risus commodo viverra</p>
+                                            <h1>Meja Classic Wood</h1>
+                                            <p>Meja ruang tamu kayu dengan desain minimalis dan elegan, cocok untuk berbagai gaya interior. Terbuat dari 
+                                                kayu berkualitas tinggi dengan warna alami yang hangat, meja ini memiliki permukaan halus dan kokoh.</p>
                                             <a href="belanja.php" class="btn_2">Lihat Koleksi</a>
                                         </div>
                                     </div>

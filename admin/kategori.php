@@ -207,9 +207,10 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
-            <div class="card-shop">
-
-               <table class="table table-with-stripped mt-2">
+            <div class="card-body">
+                
+              <!-- Table with stripped rows -->
+               <table class="table table-striped mt-2">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -267,8 +268,9 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
-
-
+          </div>
+      </div>
+    </section>
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
