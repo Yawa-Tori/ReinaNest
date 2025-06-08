@@ -49,6 +49,14 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
+<style>
+.card-title {
+    margin-top: 15px;
+}
+.card-body {
+    padding-top: 15px;
+}
+</style>
 
 <body>
 

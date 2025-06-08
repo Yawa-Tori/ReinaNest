@@ -169,8 +169,6 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
 
         <div class="row">
             <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
 
                       <?php
                       //sertakan file koneksi
@@ -223,9 +221,6 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
                           </div>
                         </div>
                       </div>
-
-                    </div>
-                </div>
             </div>
         </div>
 

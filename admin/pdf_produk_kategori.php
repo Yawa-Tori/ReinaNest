@@ -70,7 +70,7 @@ $html = '<html>
   img {
     width: 100px;
     height: 50px;
-  {
+  }
   </style>
 </head>
 <body>

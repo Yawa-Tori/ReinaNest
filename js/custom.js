@@ -145,8 +145,7 @@
     autoplay: true,
     autoplayHoverPause: true,
     autoplayTimeout: 5000,
-    nav: true,
-    navText: ["next", "previous"],
+    nav: false,
     smartSpeed: 1000,
     responsive: {
       0: {
