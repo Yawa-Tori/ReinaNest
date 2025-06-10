@@ -6,6 +6,9 @@ if (isset($_GET['id'])) {
   $id_user = $_GET['id'];
 
   //query untuk menghapus data berdasarkan id_user
+  $query = mysqli_query($koneksi, "DELETE FROM tb_user WHERE id_user = '$id_user'");
+
+  //query untuk menghapus data berdasarkan id_user
   if ($query) {
     echo "<script>alert('Data pengguna berhasil dihapus'); window.location='pengguna.php';</script>";
     header("refresh:0; pengguna.php");
