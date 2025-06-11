@@ -25,7 +25,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Keranjang - ReinaNest Admin</title>
+    <title>Transaksi - ReinaNest Admin</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -237,6 +237,7 @@ if (!isset($_SESSION["status"]) || $_SESSION["status"] !== "admin") {
                                         <th>Pengguna</th>
                                         <th>Tanggal</th>
                                         <th>Total Bayar</th>
+                                        <th>Diskon</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
